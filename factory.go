@@ -16,6 +16,9 @@ import (
 type Config struct {
 	Alg        string `mapstructure:"alg"`
 	PrivateKey string `mapstructure:"private_key_pem"`
+	// 残りの alg 例えば HMAC もサポートしてもいいかもしれない。
+	// attribute 名を指定できてもいい。が、signed.<telemetryName> がばらつくので
+	// 方式は要検討。
 }
 
 func getSigningMethod(alg, privateKey string) (any, error) {
@@ -74,6 +77,8 @@ func createLog(ctx context.Context, set processor.Settings, cfg component.Config
 			} else if resourceLogs, ok := v["resourceLogs"]; !ok {
 				return ld, fmt.Errorf("no resourceLogs")
 			} else {
+				// scopeLogs 以下だけでなく、resourceLog 全体に署名したほうが良かったような気もする
+				// しかしそうすると resource attribute の値に穴をあけてから署名しないといけない
 				for _, resourceLog := range resourceLogs.([]any) {
 					rsrc := resourceLog.(map[string]any)["resource"].(map[string]any)
 					claim := jwt.MapClaims{
