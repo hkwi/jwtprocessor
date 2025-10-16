@@ -35,31 +35,31 @@ As a developer, I want to create a new opentelemetry collector processor (jwt pr
 
 ---
 
-### User Story 2 - Integrate JWT Processor in Collector Build (Priority: P2)
+### User Story 2 - Collector Build and Artifact Verification (Priority: P2)
 
-As a developer, I want to add the jwt processor to the collector builder config (builder-config.yaml) along with otlp receiver, otlp exporter, debug exporter, kafka exporter, and filter processor, so that the collector can be built with all required components.
+As a developer, I want to build the collector with builder-config.yaml (jwtprocessor有効化)し、Goテストで `ocb --config builder-config.yaml` を実行して `dist/otelcol-jwt` の生成を自動検証したい。
 
-**Why this priority**: Ensures the processor is available in the collector build and can be tested in a real pipeline.
+**Why this priority**: ビルド成果物の自動検証により、CI/CDや開発効率が向上する。
 
-**Independent Test**: Can be fully tested by building the collector with the specified config and verifying all components are present.
+**Independent Test**: Goテストで `ocb` 実行と成果物の存在確認ができる。
 
 **Acceptance Scenarios**:
 
-1. **Given** the builder-config.yaml with all required components, **When** the collector is built, **Then** the build completes successfully and the jwt processor is included.
+1. **Given** builder-config.yamlでjwtprocessorを有効化し、**When** `ocb --config builder-config.yaml` をGoテストで実行、**Then** `dist/otelcol-jwt` が生成されていることを自動検証できる。
 
 ---
 
-### User Story 3 - Validate Collector Build with JWT Processor (Priority: P3)
+### User Story 3 - Collector実行とログ検証 (Priority: P3)
 
-As a developer, I want to confirm that the collector builds and runs with the jwt processor enabled, so that I can proceed to implement actual JWT processing logic.
+As a developer, I want to `dist/otelcol-jwt --config otelcol-config.yaml` を `test` ディレクトリでバックグラウンド起動し、`sample_out.log` の生成と `signed.` の有無をGoテストで自動検証したい。
 
-**Why this priority**: Validates the integration and readiness for further development and testing.
+**Why this priority**: 実行・ログ検証の自動化により、jwtprocessorの動作確認が容易になる。
 
-**Independent Test**: Can be fully tested by running the built collector and confirming the jwt processor is active in the pipeline.
+**Independent Test**: Goテストで成果物の実行・ログ内容検証ができる。
 
 **Acceptance Scenarios**:
 
-1. **Given** the built collector, **When** started with the config including jwt processor, **Then** the collector runs and recognizes the processor.
+1. **Given** `dist/otelcol-jwt` と `otelcol-config.yaml`、**When** `dist/otelcol-jwt --config otelcol-config.yaml` を `test` ディレクトリでバックグラウンド起動、**Then** `sample_out.log` が生成され、`signed.` を含むことを自動検証できる。
 
 ---
 
@@ -114,7 +114,7 @@ As a developer, I want to confirm that the collector builds and runs with the jw
 
 ### Measurable Outcomes
 
-- **SC-001**: The jwt processor skeleton is created and compiles without errors.
-- **SC-002**: The collector builder successfully builds with the jwt processor and all specified components enabled.
-- **SC-003**: The built collector runs and recognizes the jwt processor in the pipeline.
-- **SC-004**: All required components (receivers, exporters, processors) are present and functional in the build.
+- **SC-001**: jwtprocessorスケルトンが作成され、コンパイルエラーなくビルドできる。
+- **SC-002**: builder-config.yamlでjwtprocessorを有効化し、Goテストで `ocb --config builder-config.yaml` 実行・成果物の存在確認が自動化されている。
+- **SC-003**: Goテストで `dist/otelcol-jwt --config otelcol-config.yaml` の実行・`sample_out.log` の内容検証（`signed.` の有無）が自動化されている。
+- **SC-004**: .gitignoreで `dist/` と `test/sample_out.log` が除外されている。
