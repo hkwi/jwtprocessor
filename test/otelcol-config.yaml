@@ -1,0 +1,26 @@
+receivers:
+  filelog:
+    include:
+      - sample.log
+    start_at: beginning
+
+processors:
+  jwtprocessor:
+    alg: "EdDSA"
+    private_key_pem: |
+      -----BEGIN PRIVATE KEY-----
+      MC4CAQAwBQYDK2VwBCIEIOMUIKNOblE/dDcrHLHvF3aeHMxm8pAiNTVuuohwGL6m
+      -----END PRIVATE KEY-----
+
+exporters:
+  debug:
+    verbosity: detailed
+  file:
+    path: sample_out.log
+
+service:
+  pipelines:
+    logs:
+      receivers: [filelog]
+      processors: [jwtprocessor]
+      exporters: [debug, file]
