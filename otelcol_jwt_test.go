@@ -13,7 +13,7 @@ func TestOtelcolJwtOutput(t *testing.T) {
 		t.Fatalf("failed to change directory: %v", err)
 	}
 	// ../dist/otelcol-jwt --config otelcol-config.yaml をバックグラウンドで起動
-	cmd := exec.Command("../dist/otelcol-jwt", "--config", "otelcol-config.yaml")
+	cmd := exec.Command("../dist/otelcol", "--config", "otelcol-config.yaml")
 	logFile := "sample_out.log"
 	f, err := os.Create(logFile)
 	if err != nil {

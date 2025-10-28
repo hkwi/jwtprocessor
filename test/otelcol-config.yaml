@@ -5,12 +5,15 @@ receivers:
     start_at: beginning
 
 processors:
-  jwtprocessor:
-    alg: "EdDSA"
-    private_key_pem: |
+  jwt:
+    alg: EdDSA
+    private_key: |
       -----BEGIN PRIVATE KEY-----
       MC4CAQAwBQYDK2VwBCIEIOMUIKNOblE/dDcrHLHvF3aeHMxm8pAiNTVuuohwGL6m
       -----END PRIVATE KEY-----
+    resource_attribute: signed.rsrc
+    scope_attribute: signed.scope
+    attribute: signed
 
 exporters:
   debug:
@@ -22,5 +25,5 @@ service:
   pipelines:
     logs:
       receivers: [filelog]
-      processors: [jwtprocessor]
+      processors: [jwt]
       exporters: [debug, file]

@@ -1,5 +1,5 @@
 dist:
-  name: otelcol-jwt
+  name: otelcol
   description: JWT signing processor for OpenTelemetry Collector.
   output_path: ./dist
 
@@ -16,6 +16,7 @@ receivers:
 processors:
   - gomod: go.opentelemetry.io/collector/processor/batchprocessor v0.137.0
   - gomod: go.opentelemetry.io/collector/processor/memorylimiterprocessor v0.137.0
-  - gomod: github.com/hkwi/jwtprocessor v0.0.0
+  - gomod: github.com/open-telemetry/opentelemetry-collector-contrib/processor/resourceprocessor v0.137.0
+  - gomod: github.com/hkwi/jwtprocessor main
     path: ./
 
