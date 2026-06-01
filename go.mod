@@ -3,7 +3,7 @@ module github.com/hkwi/jwtprocessor
 go 1.24.3
 
 require (
-	github.com/golang-jwt/jwt/v5 v5.3.0
+	github.com/golang-jwt/jwt/v5 v5.3.1
 	go.opentelemetry.io/collector/component v1.43.0
 	go.opentelemetry.io/collector/consumer v1.43.0
 	go.opentelemetry.io/collector/pdata v1.43.0
